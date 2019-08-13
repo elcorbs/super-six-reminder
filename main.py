@@ -10,7 +10,7 @@ messages = ['Do you super six you silly sausage.', 'Do you want to win a million
 
 def generateMessage(endDate, today, messages):
   messageNo = random.randint(0, len(messages) - 1)
-  return "{message} You have {days} days left!".format(message = messages[messageNo], days=str((endDate - today).days))
+  return "{message} You have {days} days left! - https://super6.skysports.com/".format(message = messages[messageNo], days=str((endDate - today).days))
 
 
 data = requests.get(getCurrentActiveDates)
