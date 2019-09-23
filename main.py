@@ -4,7 +4,7 @@ from datetime import datetime
 import random
 
 getCurrentActiveDates = "https://super6.skysports.com/api/v2/round/active"
-postToSlackURL = "https://hooks.slack.com/services/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"
+postToSlackURL = "https://hooks.slack.com/services/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"
 
 
 def getMatches(data):
