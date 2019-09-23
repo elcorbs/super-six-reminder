@@ -31,7 +31,7 @@ endTime = datetime.strptime(data['endDateTime'][0:10], "%Y-%m-%d")
 if ((today >= startTime) & (today <= endTime)):
   r = requests.post(
     postToSlackURL,
-    json={'text': generateMessage(startTime, endTime, today, data)},
+    json={'text': generateMessage(startTime.date(), endTime.date(), today.date(), data)},
     headers={'content-type': 'application/json'}
   )
   print(r)
