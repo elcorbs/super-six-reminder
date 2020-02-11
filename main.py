@@ -24,14 +24,13 @@ def generateMessage(startDate, endDate, today, data):
 request = requests.get(getCurrentActiveDates)
 data = request.json()
 
-today = datetime.today()
-startTime = datetime.strptime(data['startDateTime'][0:10], "%Y-%m-%d")
-endTime = datetime.strptime(data['endDateTime'][0:10], "%Y-%m-%d")
-
+today = datetime.today().date()
+startTime = datetime.strptime(data['startDateTime'][0:10], "%Y-%m-%d").date()
+endTime = datetime.strptime(data['endDateTime'][0:10], "%Y-%m-%d").date()
 if ((today >= startTime) & (today <= endTime)):
   r = requests.post(
     postToSlackURL,
-    json={'text': generateMessage(startTime.date(), endTime.date(), today.date(), data)},
+    json={'text': generateMessage(startTime, endTime, today, data)},
     headers={'content-type': 'application/json'}
   )
   print(r)
