@@ -2,10 +2,10 @@
 import requests
 from datetime import datetime
 import random
+import os
 
 getCurrentActiveDates = "https://super6.skysports.com/api/v2/round/active"
-postToSlackURL = "https://hooks.slack.com/services/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"
-
+postToSlackURL = os.environ["SLACK_WEB_HOOK"]
 
 def getMatches(data):
   matches = [[x['match']['homeTeam']['name'], x['match']['awayTeam']['name']]  for x in data['scoreChallenges']]
