@@ -6,20 +6,15 @@ from main import data
 
 matches = [i['match'] for i in data['scoreChallenges']] # extract match data
 
-def match_urls(matches):
+def match_url(match: dict) -> str:
     competition_urls = {
         "Sky Bet Championship":"english/championship",
         "Premier League":"english/premier-league"}
-    match_urls = []
-    for match in matches:
-        match_urls.append(
-            '/'.join(["https://www.oddschecker.com/football",
-                competition_urls[match['competitionName']],
-                match['homeTeam']['name'].lower().replace(" ","-") + '-v-' + match['awayTeam']['name'].lower().replace(" ","-"),
-                "correct-score"
-            ])
-        )
-    return match_urls
+    return '/'.join(["https://www.oddschecker.com/football",
+            competition_urls[match['competitionName']],
+            match['homeTeam']['name'].lower().replace(" ","-") + '-v-' + \
+            match['awayTeam']['name'].lower().replace(" ","-"),
+            "correct-score"])
 
 def get_score_probabilities(url: str) -> dict:
     response = requests.get(url)
@@ -42,7 +37,7 @@ def scores_probabilities_message(probs: dict, display_no=4) -> str:
     return message
 
 # main #
-match_urls = match_urls(matches)
+match_urls = [match_url(match) for match in matches]
 for url in match_urls:
     score_probabilities = get_score_probabilities(url)
     if not score_probabilities:

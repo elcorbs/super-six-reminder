@@ -28,6 +28,8 @@ six = "==1.12.0"
 urllib3 = "==1.25.3"
 wcwidth = "==0.1.7"
 zipp = "==0.5.2"
+lxml = "*"
+cssselect = "*"
 
 [requires]
 python_version = "3.7"
