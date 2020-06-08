@@ -21,11 +21,12 @@ data = request.json()
 
 today = datetime.today().date()
 startDate = datetime.strptime(data['startDateTime'][0:10], "%Y-%m-%d").date()
+print(startDate)
 endDate = datetime.strptime(data['endDateTime'][0:10], "%Y-%m-%d").date()
 
 message = generateGenericMessage(startDate, endDate, today, data)
 
-if startDate == today:
+if startDate + timedelta(days=1) == today:
   message += getMatches(data) 
 
 if ((today >= startDate) & (today <= endDate)):
