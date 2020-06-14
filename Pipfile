@@ -30,6 +30,7 @@ wcwidth = "==0.1.7"
 zipp = "==0.5.2"
 lxml = "*"
 cssselect = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"

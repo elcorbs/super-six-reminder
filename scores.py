@@ -2,10 +2,6 @@ import requests
 import lxml.html
 import cssselect
 
-from main import data
-
-matches = [i['match'] for i in data['scoreChallenges']] # extract match data
-
 def match_url(match: dict) -> str:
     competition_urls = {
         "Sky Bet Championship":"english/championship",
@@ -30,17 +26,18 @@ def get_score_probabilities(url: str) -> dict:
     return score_probabilities
 
 def scores_probabilities_message(probs: dict, display_no=4) -> str:
-    message = 'Prediction score data <Probabilities from bookies odds> \\n'
+    if not probs:
+        return f'Couldnt find probability data'
+    
+    message = 'Prediction score data: \n'
     sorted_probs = sorted(probs.items(), key=lambda i: i[1], reverse=True)
     for score, prob in sorted_probs[0:display_no]:
-        message += f"{score} @ {prob*100:.1f}% \\n"
+        message += f"{score} @ {prob*100:.1f}% \n"
     return message
 
-# main #
-match_urls = [match_url(match) for match in matches]
-for url in match_urls:
-    score_probabilities = get_score_probabilities(url)
-    if not score_probabilities:
-        print(f'Couldnt find data from url: {url}')
-    else:
-        print(scores_probabilities_message(score_probabilities))
+def get_matches(data):
+  matches = [i['match'] for i in data['scoreChallenges']]
+  match_urls = [match_url(match) for match in matches]
+
+  messages = [scores_probabilities_message(get_score_probabilities(url)) for url in match_urls]
+  return str('\n'.join(messages))
