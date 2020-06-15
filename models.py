@@ -9,10 +9,16 @@ class UserModel:
         self.cursor = self.conn.cursor()    
     def entered_this_round(self, userId):
         get_user_query = """
-        SELECT * FROM "users" WHERE UserID = %s;
+        SELECT * FROM users WHERE UserID = %s;
         """
-        self.cursor.execute(get_user_query, ("{userId}",))
-        if (self.cursor.rowcount == 0):
+        print(self.cursor.mogrify(get_user_query, (userId,)))
+    
+        self.cursor.execute(get_user_query, (userId,))
+        print(self.cursor.rowcount)
+        row_count = self.cursor.rowcount
+        print(row_count)
+        self.cursor.close
+        if (row_count == 0):
           query = """
           INSERT INTO users (UserId, EnteredThisRound) VALUES (%s, TRUE);
           """
