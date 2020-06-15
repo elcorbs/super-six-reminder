@@ -9,5 +9,6 @@ def slack_proxy_response():
       data = request.get_json()
       user_model.entered_this_round(data["user"]["id"])
       return Response(status=200)
+    return Response("Expecting json format not {request.mimetype}", status=400)
 if __name__ == "__main__":    
     app.run()
