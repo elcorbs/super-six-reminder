@@ -33,7 +33,7 @@ class UserModel:
         UPDATE Users SET EnteredThisRound = 1 WHERE UserId = {userId};
         """  
         self.conn.execute(query)
-    def start_new_rounf(self):
+    def start_new_round(self):
         query = """
         UPDATE Users SET EnteredThisRound = 0;
         """
