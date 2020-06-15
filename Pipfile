@@ -31,6 +31,7 @@ zipp = "==0.5.2"
 lxml = "*"
 cssselect = "*"
 python-dotenv = "*"
+flask = "*"
 
 [requires]
 python_version = "3.7"

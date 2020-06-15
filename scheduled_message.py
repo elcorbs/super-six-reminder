@@ -30,14 +30,42 @@ today = datetime.today().date()
 startDate = parse_date(data['startDateTime'])
 endDate = parse_date(data['endDateTime'])
 
-message = generateGenericMessage(startDate, endDate, today, data)
+main_message_text = generateGenericMessage(startDate, endDate, today, data)
 
 if startDate + timedelta(days=1) == today:
-  message += match_data.retrieve(data) 
+  main_message_text += match_data.retrieve(data) 
+
+
+message = {
+  "blocks": [
+    {
+        "type": "section",
+        "text": {
+          "type": "mrkdwn",
+          "text": main_message_text 
+        }
+    },
+    {
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": True,
+						"text": "I've entered :white_check_mark:"
+					},
+					"style": "primary",
+					"value": "remove_me"
+				}
+			]
+		}
+  ]
+}
 
 if ((today >= startDate) & (today <= endDate)):
   r = requests.post(
     postToSlackURL,
-    json={'text': message},
+    json=message, 
     headers={'content-type': 'application/json'}
   )
