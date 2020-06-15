@@ -11,7 +11,8 @@ class UserModel:
         get_user_query = """
         SELECT * FROM Users WHERE UserID = %s;
         """
-        self.cursor.execute(get_user_query, userId)
+        print(userId)
+        self.cursor.execute(get_user_query, (userId,))
         if (self.cursor.rowcount == 0):
           query = """
           INSERT INTO Users (UserId, EnteredThisRound) VALUES (%s, TRUE);
@@ -20,7 +21,7 @@ class UserModel:
           query = """
           UPDATE Users SET EnteredThisRound = TRUE WHERE UserId = %s;
           """  
-        self.cursor.execute(query, userId)
+        self.cursor.execute(query, (userId,))
         self.conn.commit()
 
     def users_still_outstanding(self):
