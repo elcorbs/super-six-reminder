@@ -9,31 +9,31 @@ class UserModel:
         self.cursor = self.conn.cursor()    
     def entered_this_round(self, userId):
         get_user_query = """
-        SELECT * FROM Users WHERE UserID = %s;
+        SELECT * FROM "users" WHERE UserID = %s;
         """
         print(userId)
-        self.cursor.execute(get_user_query, (userId,))
+        self.cursor.execute(get_user_query, ("{userId}",))
         if (self.cursor.rowcount == 0):
           query = """
-          INSERT INTO Users (UserId, EnteredThisRound) VALUES (%s, TRUE);
+          INSERT INTO users (UserId, EnteredThisRound) VALUES (%s, TRUE);
           """
         else:
           query = """
-          UPDATE Users SET EnteredThisRound = TRUE WHERE UserId = %s;
+          UPDATE users SET EnteredThisRound = TRUE WHERE UserId = %s;
           """  
         self.cursor.execute(query, (userId,))
         self.conn.commit()
 
     def users_still_outstanding(self):
         query = """
-        SELECT * FROM Users WHERE EnteredThisRound = FALSE;
+        SELECT * FROM users WHERE EnteredThisRound = FALSE;
         """
         outstanding = self.cursor.execute(query)
         return outstanding.rowcount > 0 
 
     def start_new_round(self):
         query = """
-        UPDATE Users SET EnteredThisRound = FALSE;
+        UPDATE users SET EnteredThisRound = FALSE;
         """
         self.cursor.execute(query)
         self.conn.commit()
