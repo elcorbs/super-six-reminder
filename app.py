@@ -7,9 +7,7 @@ user_model = UserModel()
 def slack_proxy_response():
     if request.mimetype == 'application/json':
       data = request.get_json()
-      if data["actions"][0]["value"] == "remove_me":
-        user_model.entered_this_round(data["user"]["id"])
-        return Response(status=200)
-        
+      user_model.entered_this_round(data["user"]["id"])
+      return Response(status=200)
 if __name__ == "__main__":    
     app.run()
