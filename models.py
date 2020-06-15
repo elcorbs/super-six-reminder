@@ -27,7 +27,7 @@ class UserModel:
         SELECT COUNT(*) FROM Users WHERE EnteredThisRound = 0;
         """
         outstanding = self.conn.execute(query)
-        return outstanding != 2
+        return outstanding > 0 
 
     def start_new_round(self):
         query = """
