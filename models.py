@@ -1,27 +1,11 @@
 import sqlite3 
-
-class Schema:
-    def __init__(self):
-        print("init schema")
-        self.conn = sqlite3.connect('users.db')
-        self.create_user_table()
-
-    def create_user_table(self):
-        print("creating user table")
-        query = """
-        CREATE TABLE IF NOT EXISTS "Users" (
-          id INTEGER PRIMARY KEY,
-          UserId TEXT,
-          ReceiveAlerts integer,
-          EnteredThisRound integer,
-        );
-        """
-
-        self.conn.execute(query)
+import os
+import psycopg2
 
 class UserModel:
     def __init__(self):
-        self.conn = sqlite3.connect('users.db')
+        DATABASE_URL = os.environ['DATABASE_URL']
+        self.conn = psycopg2.connect(DATABASE_URL, sslmode='require')
     
     def entered_this_round(self, userId):
         get_user_query = """
