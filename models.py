@@ -14,23 +14,23 @@ class UserModel:
         user = self.conn.execute(get_user_query)
         if (user.rowcount == 0):
           query = """
-          INSERT INTO Users (UserId, EnteredThisRound) VALUES ({userId}, 1);
+          INSERT INTO Users (UserId, EnteredThisRound) VALUES ({userId}, TRUE);
           """
         else:
           query = """
-          UPDATE Users SET EnteredThisRound = 1 WHERE UserId = {userId};
+          UPDATE Users SET EnteredThisRound = TRUE WHERE UserId = {userId};
           """  
         self.conn.execute(query)
 
     def users_still_outstanding(self):
         query = """
-        SELECT COUNT(*) FROM Users WHERE EnteredThisRound = 0;
+        SELECT COUNT(*) FROM Users WHERE EnteredThisRound = FALSE;
         """
         outstanding = self.conn.execute(query)
         return outstanding > 0 
 
     def start_new_round(self):
         query = """
-        UPDATE Users SET EnteredThisRound = 0;
+        UPDATE Users SET EnteredThisRound = FALSE;
         """
         self.conn.execute(query)
