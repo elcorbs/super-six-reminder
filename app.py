@@ -8,4 +8,5 @@ def hello():
     return "Hello World!"      
 if __name__ == "__main__":    
     Schema()
+    print("startin app")
     app.run() 

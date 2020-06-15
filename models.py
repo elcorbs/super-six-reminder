@@ -2,10 +2,12 @@ import sqlite3
 
 class Schema:
     def __init__(self):
+        print("init schema")
         self.conn = sqlite3.connect('users.db')
         self.create_user_table()
 
     def create_user_table(self):
+        print("creating user table")
         query = """
         CREATE TABLE IF NOT EXISTS "Users" (
           id INTEGER PRIMARY KEY,
