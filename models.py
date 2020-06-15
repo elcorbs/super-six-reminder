@@ -33,6 +33,12 @@ class UserModel:
         UPDATE Users SET EnteredThisRound = 1 WHERE UserId = {userId};
         """  
         self.conn.execute(query)
+    def users_still_outstanding(self):
+        query = """
+        SELECT COUNT(*) FROM Users WHERE EnteredThisRound = 0;
+        """
+        outstanding = self.conn.execute(query)
+        return outstanding != 2
     def start_new_round(self):
         query = """
         UPDATE Users SET EnteredThisRound = 0;
