@@ -11,7 +11,6 @@ class UserModel:
         get_user_query = """
         SELECT * FROM "users" WHERE UserID = %s;
         """
-        print(userId)
         self.cursor.execute(get_user_query, ("{userId}",))
         if (self.cursor.rowcount == 0):
           query = """

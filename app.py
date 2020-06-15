@@ -8,7 +8,6 @@ user_model = UserModel()
 def slack_proxy_response():
     print(request.form.get('payload'))
     data = json.loads(request.form.get('payload'))
-    print(data)
     user_model.entered_this_round(data["user"]["id"])
     return Response(status=200)
 if __name__ == "__main__":    
