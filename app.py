@@ -5,11 +5,9 @@ app = Flask(__name__)
 user_model = UserModel()
 @app.route("/slack-response", methods=['POST'])
 def slack_proxy_response():
-    print(request.mimetype)
-    if request.mimetype == 'application/json':
-      data = request.get_json()
-      user_model.entered_this_round(data["user"]["id"])
-      return Response(status=200)
-    return Response("Expecting json format not {request.mimetype}", status=400)
+    data = request.form
+    print(request.form.keys())
+    user_model.entered_this_round(data["user"]["id"])
+    return Response(status=200)
 if __name__ == "__main__":    
     app.run()
