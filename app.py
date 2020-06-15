@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, Response
-from models import Schema, UserModel
+from models import UserModel
 app = Flask(__name__)             
 
 user_model = UserModel()
@@ -12,5 +12,4 @@ def slack_proxy_response():
         user_model.entered_this_round(data["user"]["id"])
     return Response(status=200)
 if __name__ == "__main__":    
-    Schema()
     app.run()
