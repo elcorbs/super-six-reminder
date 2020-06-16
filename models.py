@@ -11,12 +11,9 @@ class UserModel:
         get_user_query = """
         SELECT * FROM users WHERE UserID = %s;
         """
-        print(self.cursor.mogrify(get_user_query, (userId,)))
     
         self.cursor.execute(get_user_query, (userId,))
-        print(self.cursor.rowcount)
         row_count = self.cursor.rowcount
-        print(row_count)
         self.cursor.close
         if (row_count == 0):
           query = """
@@ -28,6 +25,8 @@ class UserModel:
           """  
         self.cursor.execute(query, (userId,))
         self.conn.commit()
+        self.cursor.close
+        self.conn.close
 
     def users_still_outstanding(self):
         query = """
@@ -42,3 +41,5 @@ class UserModel:
         """
         self.cursor.execute(query)
         self.conn.commit()
+        self.cursor.close
+        self.conn.close
