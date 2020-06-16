@@ -35,6 +35,7 @@ class UserModel:
         """
         self.cursor.execute(query)
         outstanding = self.cursor.rowcount
+        print(f"users left {outstanding}")
         return outstanding > 0 
 
     def start_new_round(self):
