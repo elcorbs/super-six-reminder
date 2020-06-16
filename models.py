@@ -29,11 +29,13 @@ class UserModel:
         self.conn.close
 
     def users_still_outstanding(self):
+        print("checking if users still need to enter")
         query = """
         SELECT * FROM users WHERE EnteredThisRound = FALSE;
         """
-        outstanding = self.cursor.execute(query)
-        return outstanding.rowcount > 0 
+        self.cursor.execute(query)
+        outstanding = self.cursor.rowcount
+        return outstanding > 0 
 
     def start_new_round(self):
         query = """
