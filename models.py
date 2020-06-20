@@ -14,7 +14,6 @@ class UserModel:
     
         self.cursor.execute(get_user_query, (userId,))
         row_count = self.cursor.rowcount
-        self.cursor.close
         if (row_count == 0):
           query = """
           INSERT INTO users (UserId, EnteredThisRound) VALUES (%s, TRUE);
@@ -24,9 +23,7 @@ class UserModel:
           UPDATE users SET EnteredThisRound = TRUE WHERE UserId = %s;
           """  
         self.cursor.execute(query, (userId,))
-        self.conn.commit()
-        self.cursor.close
-        self.conn.close
+        self.commit_and_close()
 
     def users_still_outstanding(self):
         outstanding = self.get_row_count("""
@@ -42,12 +39,14 @@ class UserModel:
         UPDATE users SET EnteredThisRound = FALSE;
         """
         self.cursor.execute(query)
-        self.conn.commit()
-        self.cursor.close
-        self.conn.close
+        self.commit_and_close()
     
     def get_row_count(self, query):
         self.cursor.execute(query)
         total = self.cursor.rowcount
-        self.cursor.close()
         return total
+
+    def commit_and_close(self):
+        self.conn.commit()
+        self.cursor.close
+        self.conn.close

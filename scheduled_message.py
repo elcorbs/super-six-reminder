@@ -16,8 +16,13 @@ getCurrentActiveDates = "https://super6.skysports.com/api/v2/round/active"
 postToSlackURL = os.environ["SLACK_WEB_HOOK"]
 match_data = MatchData()
 user_model = UserModel()
-def generateGenericMessage(startDate, endDate, today, data):
-  messages = ["Do your super six you silly sausage.", "Do you want to win a million or not? Do your super six.", "Be super slick and do your super six.", "Come on, come on get your super six on, it's {} morning and it won't take long".format(str(today.strftime("%A")))]
+def generate_generic_message(startDate, endDate, today, data):
+  messages = [
+    "Do your super six you silly sausage.",
+    "Do you want to win a million or not? Do your super six.",
+    "Be super slick and do your super six.",
+    "Come on, come on get your super six on, it's {} morning and it won't take long".format(str(today.strftime("%A")))
+  ]
   messageNo = random.randint(0, len(messages) - 1)
   return "{message} You have {days} days left! - https://super6.skysports.com/".format(message = messages[messageNo], days=str((endDate - today).days))
 
@@ -25,7 +30,7 @@ def parse_date(timestamp):
   return datetime.strptime(timestamp[0:10], "%Y-%m-%d").date()
 
 def generate_day_one_message(startDate, endDate, today, data):
-  return generateGenericMessage(startDate, endDate, today, data) + match_data.retrieve(data)
+  return generate_generic_message(startDate, endDate, today, data) + match_data.retrieve(data)
 
 def compose_slack_message(messageText):
   return {
@@ -61,8 +66,7 @@ data = request.json()
 today = datetime.today().date()
 startDate = parse_date(data['startDateTime'])
 endDate = parse_date(data['endDateTime'])
-print(f"users still outstanding {user_model.users_still_outstanding()}")
-print((today >= startDate) & (today <= endDate) & user_model.users_still_outstanding())
+
 if startDate + timedelta(days=1) == today:
   user_model.start_new_round()
   message = generate_day_one_message(startDate, endDate, today, data)
@@ -72,9 +76,9 @@ if startDate + timedelta(days=1) == today:
     headers={'content-type': 'application/json'}
   )
 elif ((today >= startDate) & (today <= endDate) & user_model.users_still_outstanding()):
-  message = generateGenericMessage(startDate, endDate, today, data)
+  message = generate_generic_message(startDate, endDate, today, data)
   r = requests.post(
     postToSlackURL,
-    json=message, 
+    json=compose_slack_message(message), 
     headers={'content-type': 'application/json'}
   ) 
