@@ -61,7 +61,8 @@ data = request.json()
 today = datetime.today().date()
 startDate = parse_date(data['startDateTime'])
 endDate = parse_date(data['endDateTime'])
-
+print(f"users still outstanding {user_model.users_still_outstanding()}")
+print((today >= startDate) & (today <= endDate) & user_model.users_still_outstanding())
 if startDate + timedelta(days=1) == today:
   user_model.start_new_round()
   message = generate_day_one_message(startDate, endDate, today, data)

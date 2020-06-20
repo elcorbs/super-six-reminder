@@ -29,14 +29,13 @@ class UserModel:
         self.conn.close
 
     def users_still_outstanding(self):
-        print("checking if users still need to enter")
-        query = """
+        outstanding = self.get_row_count("""
         SELECT * FROM users WHERE EnteredThisRound = FALSE;
-        """
-        self.cursor.execute(query)
-        outstanding = self.cursor.rowcount
-        print(f"users left {outstanding}")
-        return outstanding > 0 
+        """)
+        total = self.get_row_count("""
+        SELECT * FROM users;
+        """)
+        return total < 2 | outstanding > 0 
 
     def start_new_round(self):
         query = """
@@ -46,3 +45,9 @@ class UserModel:
         self.conn.commit()
         self.cursor.close
         self.conn.close
+    
+    def get_row_count(self, query):
+        self.cursor.execute(query)
+        total = self.cursor.rowcount
+        self.cursor.close()
+        return total
